@@ -1,0 +1,23 @@
+<?xml version='1.0' encoding='UTF-8'?>
+
+<!DOCTYPE struts PUBLIC
+        "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+        "http://struts.apache.org/dtds/struts-2.0.dtd">
+<struts>
+    <!--struts.devMode属性允许我们在日志文件中查看更多的调试信息-->
+    <constant name="struts.devMode" value="true"/>
+    <package name="helloWorld" extends="struts-default">
+
+        <!--注册新的拦截器-->
+        <interceptors>
+            <interceptor name="myinterceptor" class="cn.learn.structs.MyInterceptor"></interceptor>
+        </interceptors>
+
+        <action name="hello" class="cn.learn.structs.HelloWorldAction"
+                method="excute">
+            <interceptor-ref name="params"></interceptor-ref>
+            <interceptor-ref name="myinterceptor"></interceptor-ref>
+            <result name="success">/HelloWorld.jsp</result>
+        </action>
+    </package>
+</struts>

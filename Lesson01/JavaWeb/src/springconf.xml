@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+       http://www.springframework.org/schema/context
+       http://www.springframework.org/schema/context/spring-context.xsd"
+       >
+
+
+    <!--default-init-method="init"
+       default-destroy-method="destroy"-->
+    <!--作用域为prototype时，每次都会返回一个新的实例；为singleton（默认值）时，返回的是同一个实例-->
+    <!--当使用 init-method 和 destroy-method 的时候，使用 prototype 时 Spring 不会负责销毁容器对象，即 Spring 不会调用 destroy-method 所指定的方法，所以需要去掉 scope 属性，使用默认的 singleton-->
+    <bean name="User" class="com.dao.bean.User">
+        <property name="name" value="bambam"/>
+        <property name="sex" value="male"/>
+    </bean>
+
+    <!--Bean定义继承-->
+    <bean name="Teacher" class="com.dao.bean.Teacher" parent="User">
+        <property name="name" value="JHope"/>
+        <property name="age" value="25"/>
+    </bean>
+
+    <!--Bean 后置处理器允许在调用初始化方法前后对 Bean 进行额外的处理-->
+    <!--<bean class="com.dao.bean.InitUser"/>-->
+
+
+    <!--第一个是基于构造函数的依赖注入，第二个是基于设值函数的依赖注入-->
+   <!-- <bean name="textEditor" class="com.ylzr.TextEditor">
+
+        &lt;!&ndash;<constructor-arg ref="spellChecker"/>&ndash;&gt;
+        <property name="spellChecker" ref="spellChecker"/>
+    </bean>
+
+    <bean name="spellChecker" class="com.ylzr.SpellChecker"/>-->
+    <!--使用内部bean为基于 setter 注入进行配置-->
+    <!--<bean name="textEditor" class="com.ylzr.TextEditor">
+        <property name="spellChecker">
+            <bean name="spellChecker" class="com.ylzr.SpellChecker"/>
+        </property>
+    </bean>-->
+
+    <!--分别使用byName、byType、constructor模式进行自动装配-->
+    <bean name="textEditor" class="com.ylzr.TextEditor" autowire="byType"></bean>
+
+    <bean name="SpellChecker" class="com.ylzr.SpellChecker"/>
+
+    <!--注入集合-->
+    <bean name="javaCollection" class="com.ylzr.zrcollectiojn.JavaCollection">
+        <property name="addressList">
+            <list>
+                <value>INDIA</value>
+                <value>Pakistan</value>
+                <value>USA</value>
+                <value>USA</value>
+            </list>
+        </property>
+
+        <property name="addressSet">
+            <set>
+                <value>INDIA</value>
+                <value>Pakistan</value>
+                <value>USA</value>
+                <value>USA</value>
+            </set>
+        </property>
+
+        <property name="addressMap">
+            <map>
+                <entry key="1" value="INDIA"/>
+                <entry key="2" value="Pakistan"/>
+                <entry key="3" value="USA"/>
+                <entry key="4" value="USA"/>
+            </map>
+        </property>
+
+        <property name="addressProp">
+            <props>
+                <prop key="one">INDIA</prop>
+                <prop key="two">Pakistan</prop>
+                <prop key="three">USA</prop>
+                <prop key="four">USA</prop>
+            </props>
+        </property>
+    </bean>
+
+    <context:annotation-config/>
+    <bean class="org.springframework.beans.factory.annotation.RequiredAnnotationBeanPostProcessor"/>
+    <!--Qualifier和autowired注解结合使用-->
+    <bean name="student" class="com.zj.Student">
+        <property name="name" value="haha"/>
+        <property name="age" value="21"/>
+    </bean>
+
+    <bean name="student1" class="com.zj.Student">
+        <property name="name" value="Jane"/>
+        <property name="age" value="19"/>
+    </bean>
+
+    <bean name="profile" class="com.zj.Profile"/>
+
+    <!--Spring中的事件处理-->
+    <bean name="helloWorld" class="com.dao.eventhandle.HelloWorld">
+        <property name="message" value="Hello World!"/>
+    </bean>
+    <bean name="cStartEventHandler" class="com.dao.eventhandle.CStartEventHandler"/>
+    <bean name="cStopEventHandler" class="com.dao.eventhandle.CStopEventHandler"/>
+
+    <!--自定以Spring事件-->
+    <bean id="customEventHandler" class="com.dao.selfevent.CustomEventHandler"/>
+    <bean id="customEventPublisher" class="com.dao.selfevent.CustomEventPublisher"/>
+</beans>
